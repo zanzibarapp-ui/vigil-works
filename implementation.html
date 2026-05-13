@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vigil AI — Hotel Setup Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE (unchanged, same as before) ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  color: #1d1d1f;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+:root {
+  --blue: #0071e3;
+  --blue-dark: #0064cc;
+  --gray-bg: #f5f5f7;
+  --gray-mid: #86868b;
+  --gray-border: #d2d2d7;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --white: #ffffff;
+  --radius: 18px;
+  --radius-sm: 10px;
+  --green: #34c759;
+  --orange: #ff9f0a;
+  --red: #ff3b30;
+}
+
+.display { font-size: clamp(40px, 6vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; color: var(--text); }
+.headline { font-size: clamp(28px, 4vw, 52px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; color: var(--text); }
+.title { font-size: clamp(20px, 2.5vw, 28px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; color: var(--text); }
+.body-copy { font-size: clamp(15px, 1.5vw, 19px); font-weight: 400; line-height: 1.6; color: var(--text-secondary); }
+.caption { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); }
+.eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.01em; color: var(--blue); margin-bottom: 12px; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 48px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.nav-logo { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+.nav-badge { font-size: 12px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.01em; }
+.nav-cta {
+  font-size: 13px; font-weight: 500; color: var(--white);
+  background: var(--blue); padding: 7px 16px; border-radius: 20px;
+  transition: background 0.2s; cursor: pointer; border: none;
+}
+.nav-cta:hover { background: var(--blue-dark); }
+.progress-line {
+  position: fixed; top: 48px; left: 0; height: 2px;
+  background: var(--blue); z-index: 999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 6px rgba(0,113,227,0.4);
+}
+
+.section { padding: 100px 0; }
+.section-gray { background: var(--gray-bg); }
+.container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+.text-center { text-align: center; }
+
+.cta-block { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 64px 56px; text-align: center; box-shadow: 0 4px 32px rgba(0,0,0,0.06); margin-top: 80px; }
+.cta-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+.btn-primary { background: var(--blue); color: #fff; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 12px; border: none; cursor: pointer; transition: all 0.2s; }
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,113,227,0.3); }
+.btn-secondary { background: var(--gray-bg); color: var(--text); font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 12px; border: 1px solid var(--gray-border); cursor: pointer; transition: all 0.2s; }
+.btn-secondary:hover { background: #eaeaec; transform: translateY(-1px); }
+
+.hr { border: none; border-top: 1px solid var(--gray-border); margin: 0; }
+footer { padding: 48px 24px; text-align: center; background: var(--gray-bg); border-top: 1px solid var(--gray-border); }
+footer p { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* FORM STYLES (same as before, abbreviated for brevity) */
+.form-section { background: var(--white); }
+.form-wrapper {
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+.form-steps-header {
+  display: flex; align-items: center; padding: 28px 32px;
+  border-bottom: 1px solid var(--gray-border);
+  background: var(--gray-bg); gap: 0;
+  overflow-x: auto;
+}
+.form-step-indicator { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.form-step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 700;
+  background: var(--gray-border); color: var(--text-secondary);
+  transition: all 0.25s;
+}
+.form-step-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); transition: color 0.25s; white-space: nowrap; }
+.form-step-connector {
+  flex: 1; height: 1px; background: var(--gray-border);
+  min-width: 20px; margin: 0 8px; transition: background 0.25s;
+}
+.form-step-indicator.active .form-step-num { background: var(--blue); color: #fff; box-shadow: 0 0 0 4px rgba(0,113,227,0.15); }
+.form-step-indicator.active .form-step-label { color: var(--blue); }
+.form-step-indicator.done .form-step-num { background: var(--green); color: #fff; }
+.form-step-indicator.done .form-step-label { color: var(--green); }
+.form-step-connector.done { background: var(--green); }
+
+.form-body { padding: 40px 40px 32px; }
+.form-step { display: none; }
+.form-step.active { display: block; animation: fadeStep 0.3s ease; }
+@keyframes fadeStep { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+
+.form-step-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -0.02em; }
+.form-step-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.5; }
+
+.form-grid { display: grid; gap: 20px; }
+.form-grid-2 { grid-template-columns: 1fr 1fr; }
+.form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+.form-field label .required-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+.form-field label .opt-tag { font-size: 10px; font-weight: 500; color: var(--text-secondary); background: var(--gray-bg); padding: 1px 6px; border-radius: 4px; }
+.form-input {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--gray-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px; font-family: inherit; color: var(--text);
+  background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,113,227,0.12); }
+.form-input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(255,59,48,0.1); }
+textarea.form-input { resize: vertical; min-height: 90px; }
+select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2386868b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+.form-hint { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+.form-divider { height: 1px; background: var(--gray-border); margin: 28px 0; }
+.form-section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 16px; }
+
+/* Staff & Room tables (same as before) */
+.staff-table-wrap, .room-table-wrap { border: 1px solid var(--gray-border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 12px; }
+.staff-table-head, .room-table-head { display: grid; background: var(--gray-bg); border-bottom: 1px solid var(--gray-border); }
+.staff-table-head { grid-template-columns: 1fr 1fr 1fr 1fr 36px; }
+.room-table-head { grid-template-columns: 2fr 1fr 1fr 36px; }
+.staff-table-head div, .room-table-head div { padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+.staff-rows, .room-rows { display: flex; flex-direction: column; }
+.staff-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 36px; align-items: center; border-bottom: 1px solid var(--gray-bg); }
+.room-row { display: grid; grid-template-columns: 2fr 1fr 1fr 36px; align-items: center; border-bottom: 1px solid var(--gray-bg); }
+.staff-row input, .room-row input, .staff-row select { border: none; outline: none; padding: 10px 12px; font-size: 13px; background: transparent; width: 100%; }
+.staff-row-del, .room-row-del { width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; color: var(--text-secondary); font-size: 16px; }
+.staff-row-del:hover, .room-row-del:hover { color: var(--red); }
+.btn-add-staff { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--blue); background: rgba(0,113,227,0.06); padding: 8px 16px; border-radius: 8px; cursor: pointer; border: none; }
+.btn-add-staff:hover { background: rgba(0,113,227,0.1); }
+
+/* Checkbox & Radio (same) */
+.checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+.checkbox-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.checkbox-item input[type="checkbox"] { display: none; }
+.checkbox-box { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--gray-border); flex-shrink: 0; margin-top: 1px; display: grid; place-items: center; }
+.checkbox-item input:checked + .checkbox-box { background: var(--blue); border-color: var(--blue); }
+.checkbox-item input:checked + .checkbox-box::after { content: ''; width: 10px; height: 6px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translateY(-1px); }
+.checkbox-item-text { font-size: 14px; color: var(--text); line-height: 1.4; }
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-item { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px 14px; border: 1.5px solid var(--gray-border); border-radius: 8px; }
+.radio-item input[type="radio"] { display: none; }
+.radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--gray-border); display: grid; place-items: center; }
+.radio-item:has(input:checked) { border-color: var(--blue); background: rgba(0,113,227,0.04); }
+.radio-item:has(input:checked) .radio-dot { border-color: var(--blue); }
+.radio-item:has(input:checked) .radio-dot::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+.radio-label { font-size: 14px; color: var(--text); }
+
+/* File upload */
+.file-upload-zone { border: 2px dashed var(--gray-border); border-radius: var(--radius-sm); padding: 28px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--gray-bg); }
+.file-upload-zone:hover { border-color: var(--blue); background: rgba(0,113,227,0.03); }
+.file-upload-zone.has-files { border-color: var(--green); background: rgba(52,199,89,0.04); }
+.file-upload-icon { font-size: 28px; margin-bottom: 8px; }
+.file-upload-text { font-size: 13px; color: var(--text-secondary); }
+.file-upload-text strong { color: var(--blue); }
+.file-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.file-item { display: flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--gray-border); border-radius: 6px; padding: 6px 10px; font-size: 12px; }
+.file-item-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-item-size { color: var(--text-secondary); flex-shrink: 0; }
+.file-item-del { cursor: pointer; color: var(--text-secondary); flex-shrink: 0; }
+.file-item-del:hover { color: var(--red); }
+.file-attach-note { background: rgba(255,159,10,0.08); border: 1px solid rgba(255,159,10,0.25); border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 12px; color: #7a4f00; line-height: 1.5; }
+
+/* Form navigation */
+.form-nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 40px 32px; border-top: 1px solid var(--gray-border); }
+.btn-form-prev { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--text-secondary); background: none; border: none; cursor: pointer; }
+.btn-form-prev:disabled { opacity: 0.3; cursor: default; }
+.btn-form-next { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #fff; background: var(--blue); border: none; cursor: pointer; padding: 12px 24px; border-radius: 10px; }
+.btn-form-next:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.btn-form-submit { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #fff; background: var(--green); border: none; cursor: pointer; padding: 12px 28px; border-radius: 10px; }
+.btn-form-submit:hover { background: #2ab04e; }
+.form-step-count { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+
+/* Success / Sending */
+.form-success, .form-sending { display: none; text-align: center; padding: 80px 40px; }
+.form-success.active, .form-sending.active { display: block; }
+.form-success-icon { width: 72px; height: 72px; border-radius: 50%; background: rgba(52,199,89,0.12); display: grid; place-items: center; margin: 0 auto 24px; font-size: 32px; }
+.send-spinner { width: 40px; height: 40px; border: 3px solid var(--gray-border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.form-summary-box { background: var(--gray-bg); border-radius: var(--radius-sm); padding: 20px 24px; text-align: left; max-width: 480px; margin: 0 auto 24px; font-size: 13px; line-height: 2; }
+
+@media (max-width: 768px) {
+  .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+  .staff-table-head, .staff-row { grid-template-columns: 1fr 1fr 36px; }
+  .staff-table-head div:nth-child(3), .staff-table-head div:nth-child(4),
+  .staff-row input:nth-child(3), .staff-row select { display: none; }
+  .room-table-head, .room-row { grid-template-columns: 2fr 1fr 36px; }
+  .room-table-head div:nth-child(3), .room-row input:nth-child(3) { display: none; }
+  .form-body, .form-nav { padding-left: 20px; padding-right: 20px; }
+  .cta-block { padding: 40px 28px; margin-top: 60px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress" class="progress-line" style="width:0%"></div>
+<nav>
+  <div class="nav-logo">Vigil AI</div>
+  <div class="nav-badge">Hotel Setup Brief</div>
+  <button class="nav-cta" onclick="document.getElementById('submit-form').scrollIntoView({behavior:'smooth'})">Complete Setup →</button>
+</nav>
+
+<!-- Hero Card -->
+<div class="container">
+  <div class="cta-block fade-up" style="margin-top: 80px;">
+    <div class="eyebrow">Ready?</div>
+    <h2 class="headline">Let's build your<br>digital twin.</h2>
+    <p class="body-copy">Tell us about your property, staff, and operations — the more complete your data, the faster Vigil starts working for you. Use the form below to send everything to our team.</p>
+    <div class="cta-buttons">
+      <button class="btn-primary" onclick="window.print()">⬇ Save as PDF</button>
+      <button class="btn-secondary" onclick="document.getElementById('submit-form').scrollIntoView({behavior:'smooth'})">Start setup form ↓</button>
+      <button class="btn-secondary" onclick="shareGuide()">↗ Share with your team</button>
+    </div>
+  </div>
+</div>
+
+<hr class="hr" style="margin-top: 60px;">
+
+<!-- FORM SECTION -->
+<section class="section section-gray form-section" id="submit-form">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:48px">
+      <div class="eyebrow">Send us everything</div>
+      <h2 class="headline">Complete your setup brief</h2>
+      <p class="body-copy" style="max-width:560px;margin:16px auto 0">Fill in this form and hit send. Your answers and uploaded files go directly to the Vigil team.</p>
+    </div>
+
+    <div class="form-wrapper fade-up fade-delay-1">
+      <!-- Step header -->
+      <div class="form-steps-header">
+        <div class="form-step-indicator active" id="si-1"><div class="form-step-num">1</div><div class="form-step-label">Hotel & Contact</div></div>
+        <div class="form-step-connector" id="sc-1"></div>
+        <div class="form-step-indicator" id="si-2"><div class="form-step-num">2</div><div class="form-step-label">Property</div></div>
+        <div class="form-step-connector" id="sc-2"></div>
+        <div class="form-step-indicator" id="si-3"><div class="form-step-num">3</div><div class="form-step-label">Rooms & Staff</div></div>
+        <div class="form-step-connector" id="sc-3"></div>
+        <div class="form-step-indicator" id="si-4"><div class="form-step-num">4</div><div class="form-step-label">Integrations</div></div>
+        <div class="form-step-connector" id="sc-4"></div>
+        <div class="form-step-indicator" id="si-5"><div class="form-step-num">5</div><div class="form-step-label">Tech & Notes</div></div>
+      </div>
+
+      <div class="form-body">
+        <!-- STEP 1 -->
+        <div class="form-step active" id="step-1">
+          <div class="form-step-title">Hotel & Contact Details</div>
+          <div class="form-step-desc">Start with your hotel name, then tell us who we should be in touch with.</div>
+          <div class="form-grid">
+            <div class="form-field" data-required><label>Hotel name <span class="required-dot"></span></label><input type="text" class="form-input" id="f-hotelname" placeholder="e.g. Sunrise Beach Resort"></div>
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-grid form-grid-2">
+            <div class="form-field" data-required><label>Your full name <span class="required-dot"></span></label><input type="text" class="form-input" id="f-name" placeholder="e.g. John Smith"></div>
+            <div class="form-field" data-required><label>Role / Title <span class="required-dot"></span></label><input type="text" class="form-input" id="f-role" placeholder="e.g. Owner, GM"></div>
+            <div class="form-field" data-required><label>WhatsApp number <span class="required-dot"></span></label><input type="tel" class="form-input" id="f-whatsapp" placeholder="+255 XXX XXX XXX"><span class="form-hint">Include country code.</span></div>
+            <div class="form-field" data-required><label>Email address <span class="required-dot"></span></label><input type="email" class="form-input" id="f-email" placeholder="you@example.com"></div>
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-section-label">Preferred installation date</div>
+          <div class="form-grid form-grid-2">
+            <div class="form-field"><label>Ideal start date <span class="opt-tag">optional</span></label><input type="date" class="form-input" id="f-date"></div>
+            <div class="form-field"><label>Urgency</label><select class="form-input" id="f-urgency"><option value="">Select one</option><option value="asap">ASAP — within 2 weeks</option><option value="month">Within the next month</option><option value="flexible">Flexible</option><option value="planning">Just planning ahead</option></select></div>
+          </div>
+        </div>
+
+        <!-- STEP 2: PROPERTY with SOP file upload -->
+        <div class="form-step" id="step-2">
+          <div class="form-step-title">Property Details</div>
+          <div class="form-step-desc">Tell us about your property so Vigil's database is accurate from day one.</div>
+          <div class="form-grid">
+            <div class="form-grid form-grid-3">
+              <div class="form-field" data-required><label>Total rooms / villas <span class="required-dot"></span></label><input type="number" class="form-input" id="f-rooms-total" placeholder="e.g. 8" min="1"></div>
+              <div class="form-field"><label>Max guest capacity <span class="opt-tag">optional</span></label><input type="number" class="form-input" id="f-capacity" placeholder="e.g. 24"></div>
+              <div class="form-field"><label>Total staff headcount <span class="opt-tag">optional</span></label><input type="number" class="form-input" id="f-staffcount" placeholder="e.g. 12"></div>
+            </div>
+            <div class="form-field"><label>Shared facilities</label><input type="text" class="form-input" id="f-facilities" placeholder="e.g. Pool, Beach Bar, Restaurant"></div>
+            <div class="form-field" data-required><label>Property address <span class="required-dot"></span></label><input type="text" class="form-input" id="f-address" placeholder="e.g. Paje Beach, Zanzibar"></div>
+            <div class="form-grid form-grid-2">
+              <div class="form-field"><label>Currency for rates</label><select class="form-input" id="f-currency"><option value="USD">USD</option><option value="EUR">EUR</option><option value="TZS">TZS</option><option value="GBP">GBP</option><option value="other">Other</option></select></div>
+              <div class="form-field"><label>Languages spoken by staff</label><input type="text" class="form-input" id="f-languages" placeholder="e.g. Swahili, English"></div>
+            </div>
+            <div class="form-field"><label>SOPs / Operating procedures <span class="opt-tag">optional</span></label><textarea class="form-input" id="f-sops" placeholder="Describe check-in, housekeeping standards, meal times, security rules..."></textarea></div>
+            <!-- SOP file upload -->
+            <div class="form-field">
+              <label>SOP documents <span class="opt-tag">optional — upload PDF, Word, images</span></label>
+              <div class="file-upload-zone" id="sopDropZone" onclick="document.getElementById('sopFileInput').click()" ondrop="handleSopDrop(event)" ondragover="event.preventDefault()">
+                <div class="file-upload-icon">📄</div>
+                <div class="file-upload-text"><strong>Click to select SOP files</strong> or drag and drop</div>
+                <div class="file-list" id="sopFileList"></div>
+              </div>
+              <input type="file" id="sopFileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,image/*" style="display:none" onchange="handleSopFileSelect(event)">
+              <div class="file-attach-note">💡 Your files will be attached to the email sent to our team.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: ROOMS & STAFF -->
+        <div class="form-step" id="step-3">
+          <div class="form-step-title">Rooms & Staff Roster</div>
+          <div class="form-step-desc">Add your rooms/villas and staff members.</div>
+          <div class="form-section-label">Rooms & Villas</div>
+          <div class="room-table-wrap"><div class="room-table-head"><div>Room / Villa Name</div><div>Max Guests</div><div>Rate / Night (USD)</div><div></div></div><div class="room-rows" id="roomRows"><div class="room-row"><input type="text" placeholder="Villa 1"><input type="number" placeholder="2"><input type="number" placeholder="490"><div class="room-row-del" onclick="delRow(this,'roomRows')">×</div></div><div class="room-row"><input type="text" placeholder="Beach Bungalow"><input type="number" placeholder="3"><input type="number" placeholder="320"><div class="room-row-del" onclick="delRow(this,'roomRows')">×</div></div></div></div>
+          <button class="btn-add-staff" type="button" onclick="addRoomRow()">+ Add room / villa</button>
+          <div class="form-divider"></div>
+          <div class="form-section-label">Staff Roster</div>
+          <div class="staff-table-wrap"><div class="staff-table-head"><div>Full Name</div><div>Role</div><div>Phone (WhatsApp)</div><div>Language</div><div></div></div><div class="staff-rows" id="staffRows"><div class="staff-row"><input type="text" placeholder="Amina Juma"><input type="text" placeholder="Head Housekeeper"><input type="tel" placeholder="+255 XXX"><select><option value="">Language</option><option value="swahili">Swahili</option><option value="english">English</option></select><div class="staff-row-del" onclick="delRow(this,'staffRows')">×</div></div><div class="staff-row"><input type="text" placeholder="Kevin Owino"><input type="text" placeholder="Security"><input type="tel" placeholder="+255 XXX"><select><option value="">Language</option><option value="swahili">Swahili</option><option value="english">English</option></select><div class="staff-row-del" onclick="delRow(this,'staffRows')">×</div></div></div></div>
+          <button class="btn-add-staff" type="button" onclick="addStaffRow()">+ Add staff member</button>
+          <div class="form-divider"></div>
+          <div class="form-field"><label>Shift schedules <span class="opt-tag">optional</span></label><textarea class="form-input" id="f-shifts" placeholder="e.g. Housekeeping: 07:30–15:30"></textarea></div>
+        </div>
+
+        <!-- STEP 4: INTEGRATIONS -->
+        <div class="form-step" id="step-4">
+          <div class="form-step-title">Booking Channels & Systems</div>
+          <div class="form-step-desc">Tell us which platforms your property uses.</div>
+          <div class="form-section-label">OTA Channels</div>
+          <div class="form-grid form-grid-2">
+            <div class="form-field"><label>Booking.com login email</label><input type="email" class="form-input" id="f-bdc-email"></div>
+            <div class="form-field"><label>Booking.com Property ID</label><input type="text" class="form-input" id="f-bdc-pid" placeholder="e.g. 4521839"></div>
+            <div class="form-field"><label>Airbnb listing URL or host email</label><input type="text" class="form-input" id="f-airbnb"></div>
+            <div class="form-field"><label>Other OTA channels</label><input type="text" class="form-input" id="f-other-ota"></div>
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-section-label">Property Management System</div>
+          <div class="form-grid form-grid-2">
+            <div class="form-field"><label>PMS software used</label><select class="form-input" id="f-pms"><option value="">Select</option><option value="mews">Mews</option><option value="cloudbeds">Cloudbeds</option><option value="none">No PMS</option><option value="other">Other</option></select></div>
+            <div class="form-field"><label>PMS name (if "Other")</label><input type="text" class="form-input" id="f-pms-other"></div>
+            <div class="form-field"><label>POS system</label><select class="form-input" id="f-pos"><option value="">Select</option><option value="square">Square</option><option value="manual">Manual</option></select></div>
+            <div class="form-field"><label>Accounting software</label><select class="form-input" id="f-accounting"><option value="">Select</option><option value="quickbooks">QuickBooks</option><option value="none">None</option></select></div>
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-section-label">Active channels</div>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="channels" value="whatsapp"><div class="checkbox-box"></div><div class="checkbox-item-text">WhatsApp Business</div></label>
+            <label class="checkbox-item"><input type="checkbox" name="channels" value="email"><div class="checkbox-box"></div><div class="checkbox-item-text">Email (SMTP)</div></label>
+            <label class="checkbox-item"><input type="checkbox" name="channels" value="cctv"><div class="checkbox-box"></div><div class="checkbox-item-text">CCTV / security cameras</div></label>
+          </div>
+        </div>
+
+        <!-- STEP 5: TECH & NOTES + floor plan upload -->
+        <div class="form-step" id="step-5">
+          <div class="form-step-title">Technical Setup & Final Notes</div>
+          <div class="form-step-desc">Tell us about your infrastructure and anything else.</div>
+          <div class="form-section-label">Server / Infrastructure</div>
+          <div class="form-grid form-grid-2">
+            <div class="form-field"><label>Dedicated on-property server?</label><div class="radio-group"><label class="radio-item"><input type="radio" name="server" value="yes"><div class="radio-dot"></div><span class="radio-label">Yes — dedicated PC</span></label><label class="radio-item"><input type="radio" name="server" value="laptop"><div class="radio-dot"></div><span class="radio-label">Laptop that stays on</span></label><label class="radio-item"><input type="radio" name="server" value="none"><div class="radio-dot"></div><span class="radio-label">Nothing yet</span></label></div></div>
+            <div class="form-field"><label>Internet connection quality</label><select class="form-input" id="f-internet"><option value="">Select</option><option value="fiber">Fiber</option><option value="lte">4G/LTE</option><option value="slow">Slow</option></select></div>
+          </div>
+          <div class="form-grid form-grid-2" style="margin-top:20px">
+            <div class="form-field"><label>Router brand/model</label><input type="text" class="form-input" id="f-router"></div>
+            <div class="form-field"><label>Camera system / NVR</label><input type="text" class="form-input" id="f-cameras"></div>
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-section-label">Slack workspace</div>
+          <div class="form-grid form-grid-2">
+            <div class="form-field"><label>Slack workspace created?</label><div class="radio-group"><label class="radio-item"><input type="radio" name="slack-status" value="yes"><div class="radio-dot"></div><span class="radio-label">Yes</span></label><label class="radio-item"><input type="radio" name="slack-status" value="no"><div class="radio-dot"></div><span class="radio-label">Not yet</span></label></div></div>
+            <div class="form-field"><label>Slack workspace URL</label><input type="text" class="form-input" id="f-slack-url" placeholder="yourhotel.slack.com"></div>
+          </div>
+          <div class="form-divider"></div>
+          <!-- Floor plan upload -->
+          <div class="form-field"><label>Floor plan / property map <span class="opt-tag">optional</span></label>
+            <div class="file-upload-zone" id="floorDropZone" onclick="document.getElementById('floorFileInput').click()" ondrop="handleFloorDrop(event)" ondragover="event.preventDefault()">
+              <div class="file-upload-icon">🗺️</div>
+              <div class="file-upload-text"><strong>Click to select files</strong> or drag and drop</div>
+              <div class="file-list" id="floorFileList"></div>
+            </div>
+            <input type="file" id="floorFileInput" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" style="display:none" onchange="handleFloorFileSelect(event)">
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-field"><label>Anything else we should know</label><textarea class="form-input" id="f-notes" style="min-height:120px"></textarea></div>
+          <div style="background:rgba(0,113,227,0.04);border:1px solid rgba(0,113,227,0.12);border-radius:10px;padding:18px 20px;margin-top:24px">
+            <label class="checkbox-item"><input type="checkbox" id="f-confirm"><div class="checkbox-box"></div><div class="checkbox-item-text" style="font-size:13px;">I confirm that this information is accurate and I give Vigil AI permission to use it to configure our deployment.</div></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-form-prev" id="btn-prev" onclick="formPrev()" disabled>← Back</button>
+        <div class="form-step-count" id="form-step-count">Step 1 of 5</div>
+        <button class="btn-form-next" id="btn-next" onclick="formNext()">Continue →</button>
+        <button class="btn-form-submit" id="btn-submit" style="display:none" onclick="submitForm()">✉ Send to Vigil Team</button>
+      </div>
+
+      <div class="form-sending" id="form-sending"><div class="send-spinner"></div><p>Sending your brief and files to the Vigil team…</p></div>
+      <div class="form-success" id="form-success">
+        <div class="form-success-icon">✅</div>
+        <h3>Brief received. We're on it.</h3>
+        <p>Your implementation brief and uploaded files have been sent to <strong>hello@vigil.works</strong>. The Vigil team will review and reach out within 24 hours.</p>
+        <div class="form-summary-box" id="form-summary-box"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-primary" onclick="window.print()">⬇ Save as PDF</button>
+          <button class="btn-secondary" onclick="shareGuide()">↗ Share with your team</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr">
+<footer><p>Vigil AI — Autonomous Hotel Management</p><p>Implementation Setup Brief</p><p style="margin-top:8px;font-size:11px">© 2025 Vigil AI · <a href="mailto:hello@vigil.works" style="color:var(--blue)">hello@vigil.works</a></p></footer>
+
+<script>
+// ═══════════════════════════════════════
+// FILE ATTACHMENTS VIA FORMSUBMIT.CO (with _file: true)
+// ═══════════════════════════════════════
+const SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/hello@vigil.works';
+
+let sopFiles = [];
+let floorFiles = [];
+
+// SOP file handlers
+function handleSopFileSelect(e) {
+  const files = Array.from(e.target.files);
+  files.forEach(f => { if (!sopFiles.find(x => x.name === f.name)) sopFiles.push(f); });
+  renderSopFileList();
+}
+function handleSopDrop(e) {
+  e.preventDefault();
+  const files = Array.from(e.dataTransfer.files);
+  files.forEach(f => { if (!sopFiles.find(x => x.name === f.name)) sopFiles.push(f); });
+  renderSopFileList();
+}
+function renderSopFileList() {
+  const list = document.getElementById('sopFileList');
+  const zone = document.getElementById('sopDropZone');
+  if (!list) return;
+  list.innerHTML = sopFiles.map((f, i) => `<div class="file-item"><span>📄</span><span class="file-item-name">${f.name}</span><span class="file-item-size">${(f.size/1024).toFixed(0)} KB</span><span class="file-item-del" onclick="removeSopFile(${i})">✕</span></div>`).join('');
+  if (zone) zone.classList.toggle('has-files', sopFiles.length > 0);
+}
+function removeSopFile(i) { sopFiles.splice(i,1); renderSopFileList(); }
+
+// Floor plan handlers
+function handleFloorFileSelect(e) {
+  const files = Array.from(e.target.files);
+  files.forEach(f => { if (!floorFiles.find(x => x.name === f.name)) floorFiles.push(f); });
+  renderFloorFileList();
+}
+function handleFloorDrop(e) {
+  e.preventDefault();
+  const files = Array.from(e.dataTransfer.files);
+  files.forEach(f => { if (!floorFiles.find(x => x.name === f.name)) floorFiles.push(f); });
+  renderFloorFileList();
+}
+function renderFloorFileList() {
+  const list = document.getElementById('floorFileList');
+  const zone = document.getElementById('floorDropZone');
+  if (!list) return;
+  list.innerHTML = floorFiles.map((f, i) => `<div class="file-item"><span>🗺️</span><span class="file-item-name">${f.name}</span><span class="file-item-size">${(f.size/1024).toFixed(0)} KB</span><span class="file-item-del" onclick="removeFloorFile(${i})">✕</span></div>`).join('');
+  if (zone) zone.classList.toggle('has-files', floorFiles.length > 0);
+}
+function removeFloorFile(i) { floorFiles.splice(i,1); renderFloorFileList(); }
+
+// Progress & fade
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+});
+const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.06 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+function shareGuide() {
+  if (navigator.share) navigator.share({ title: 'Vigil AI — Hotel Setup Brief', url: window.location.href });
+  else navigator.clipboard?.writeText(window.location.href).then(() => showToast('Link copied')).catch(() => alert(window.location.href));
+}
+function showToast(msg, type='info') {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:${type==='error'?'#ff3b30':'#1d1d1f'};color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:9999;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// Multi-step form
+let currentStep = 1;
+const totalSteps = 5;
+function updateStepUI() {
+  for (let i=1;i<=totalSteps;i++) document.getElementById('step-'+i)?.classList.toggle('active', i===currentStep);
+  for (let i=1;i<=totalSteps;i++) {
+    const ind = document.getElementById('si-'+i);
+    if(ind) { ind.classList.remove('active','done'); if(i===currentStep) ind.classList.add('active'); else if(i<currentStep) ind.classList.add('done'); }
+  }
+  for (let i=1;i<totalSteps;i++) { const c = document.getElementById('sc-'+i); if(c) c.classList.toggle('done', i<currentStep); }
+  document.getElementById('btn-prev').disabled = currentStep === 1;
+  document.getElementById('form-step-count').textContent = `Step ${currentStep} of ${totalSteps}`;
+  const isLast = currentStep === totalSteps;
+  document.getElementById('btn-next').style.display = isLast ? 'none' : '';
+  document.getElementById('btn-submit').style.display = isLast ? '' : 'none';
+  window.scrollTo({ top: document.getElementById('submit-form').offsetTop - 60, behavior: 'smooth' });
+}
+function validateStep(step) {
+  const stepEl = document.getElementById('step-'+step);
+  const required = stepEl.querySelectorAll('[data-required] .form-input');
+  let valid = true;
+  required.forEach(inp => { if(!inp.value.trim()) { inp.closest('.form-field')?.classList.add('has-error'); valid=false; } else { inp.closest('.form-field')?.classList.remove('has-error'); } });
+  if(!valid) showToast('Please fill in all required fields', 'error');
+  return valid;
+}
+function formNext() { if(validateStep(currentStep) && currentStep<totalSteps) { currentStep++; updateStepUI(); } }
+function formPrev() { if(currentStep>1) { currentStep--; updateStepUI(); } }
+
+// Row builders
+function addRoomRow() {
+  const row = document.createElement('div'); row.className='room-row';
+  row.innerHTML = `<input type="text" placeholder="Room name"><input type="number" placeholder="Guests"><input type="number" placeholder="Rate"><div class="room-row-del" onclick="delRow(this,'roomRows')">×</div>`;
+  document.getElementById('roomRows').appendChild(row);
+}
+function addStaffRow() {
+  const row = document.createElement('div'); row.className='staff-row';
+  row.innerHTML = `<input type="text" placeholder="Full Name"><input type="text" placeholder="Role"><input type="tel" placeholder="Phone"><select><option value="">Language</option><option value="swahili">Swahili</option><option value="english">English</option></select><div class="staff-row-del" onclick="delRow(this,'staffRows')">×</div>`;
+  document.getElementById('staffRows').appendChild(row);
+}
+function delRow(btn, containerId) { btn.closest('.room-row,.staff-row')?.remove(); }
+
+// Collect text data
+function collectFormData() {
+  const g = id => document.getElementById(id)?.value.trim() || '';
+  const roomRows = document.querySelectorAll('#roomRows .room-row');
+  const rooms_list = Array.from(roomRows).map(r => { const inp = r.querySelectorAll('input'); return `${inp[0]?.value||''} | Max: ${inp[1]?.value||'?'} | $${inp[2]?.value||'?'}`; }).join('\n');
+  const staffRows = document.querySelectorAll('#staffRows .staff-row');
+  const staff_list = Array.from(staffRows).map(r => { const inp = r.querySelectorAll('input'); const sel = r.querySelector('select'); return `${inp[0]?.value||''} — ${inp[1]?.value||''} | ${inp[2]?.value||''} | ${sel?.value||''}`; }).join('\n');
+  const channels = Array.from(document.querySelectorAll('[name="channels"]:checked')).map(c=>c.value).join(', ');
+  const server_setup = document.querySelector('[name="server"]:checked')?.value || '';
+  const slack_status = document.querySelector('[name="slack-status"]:checked')?.value || '';
+  return {
+    hotel_name: g('f-hotelname'), contact_name: g('f-name'), contact_role: g('f-role'),
+    contact_whatsapp: g('f-whatsapp'), contact_email: g('f-email'), install_date: g('f-date'),
+    install_urgency: g('f-urgency'), address: g('f-address'), rooms_total: g('f-rooms-total'),
+    capacity: g('f-capacity'), staff_count: g('f-staffcount'), facilities: g('f-facilities'),
+    currency: g('f-currency'), languages: g('f-languages'), sops_text: g('f-sops'),
+    rooms_list, staff_list, shifts: g('f-shifts'), bdc_email: g('f-bdc-email'),
+    bdc_property_id: g('f-bdc-pid'), airbnb: g('f-airbnb'), other_ota: g('f-other-ota'),
+    pms: g('f-pms'), pms_other: g('f-pms-other'), pos: g('f-pos'), accounting: g('f-accounting'),
+    active_channels: channels, server_setup, internet: g('f-internet'), router: g('f-router'),
+    cameras: g('f-cameras'), slack_status, slack_url: g('f-slack-url'), notes: g('f-notes'),
+    sop_files_count: sopFiles.length, floor_files_count: floorFiles.length,
+    submitted_at: new Date().toISOString().replace('T',' ').slice(0,19)
+  };
+}
+
+// Submit with files
+async function submitForm() {
+  const confirm = document.getElementById('f-confirm');
+  if (!confirm?.checked) { showToast('Please confirm your information is accurate', 'error'); return; }
+  const data = collectFormData();
+  if (!data.hotel_name || !data.contact_name || !data.contact_whatsapp) { showToast('Please fill in hotel name, your name, and WhatsApp', 'error'); return; }
+
+  const formData = new FormData();
+  formData.append('_subject', `Vigil Setup Brief — ${data.hotel_name} — ${data.contact_name}`);
+  formData.append('_replyto', data.contact_email);
+  formData.append('_file', 'true');   // CRITICAL: enables file attachments
+  // Append all text fields
+  for (const [key, val] of Object.entries(data)) formData.append(key, val);
+  // Append files
+  for (const f of sopFiles) formData.append('sop_documents[]', f);
+  for (const f of floorFiles) formData.append('floor_plan_files[]', f);
+
+  document.querySelectorAll('.form-body, .form-steps-header, .form-nav').forEach(el => el.style.display = 'none');
+  document.getElementById('form-sending').classList.add('active');
+
+  try {
+    const res = await fetch(SUBMIT_ENDPOINT, { method: 'POST', body: formData });
+    const json = await res.json();
+    if (!res.ok || (json.success !== 'true' && json.success !== true)) throw new Error();
+    showSuccess(data);
+  } catch (err) {
+    console.warn('Form submit failed, fallback to mailto without files', err);
+    const bodyText = buildEmailBody(data);
+    const mailto = `mailto:hello@vigil.works?subject=${encodeURIComponent(`Vigil Setup Brief — ${data.hotel_name}`)}&body=${encodeURIComponent(bodyText.substring(0,2000))}`;
+    window.location.href = mailto;
+    setTimeout(() => showSuccess(data), 1800);
+  }
+}
+
+function buildEmailBody(d) {
+  return `Vigil AI Brief\nHotel: ${d.hotel_name}\nContact: ${d.contact_name} (${d.contact_whatsapp})\nRooms: ${d.rooms_total}\nStaff: ${d.staff_count}\nSOP text: ${d.sops_text}\nFiles uploaded: SOPs=${d.sop_files_count}, Floor=${d.floor_files_count}\n(File attachments not included in this fallback email)`;
+}
+
+function showSuccess(data) {
+  document.getElementById('form-sending').classList.remove('active');
+  document.getElementById('form-success').classList.add('active');
+  document.getElementById('form-summary-box').innerHTML = `
+    <strong>Hotel:</strong> ${data.hotel_name}<br>
+    <strong>Contact:</strong> ${data.contact_name} · ${data.contact_whatsapp}<br>
+    <strong>Rooms:</strong> ${data.rooms_total || '?'} | <strong>Staff:</strong> ${data.staff_count || '?'}<br>
+    <strong>SOP files:</strong> ${data.sop_files_count} attached<br>
+    <strong>Floor plan files:</strong> ${data.floor_files_count} attached<br>
+    <strong>Sent to:</strong> hello@vigil.works
+  `;
+  document.querySelector('.form-steps-header').style.display = 'none';
+}
+
+updateStepUI();
+</script>
+</body>
+</html>
