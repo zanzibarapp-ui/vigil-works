@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vigil AI — Hotel Setup Brief</title>
+<title>Vigil AI Manager — Hotel Setup Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -300,7 +300,7 @@ select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Vigil AI</div>
+  <div class="nav-logo">Vigil AI Manager</div>
   <div class="nav-badge">Hotel Setup Brief</div>
   <button class="nav-cta" onclick="document.getElementById('submit-form').scrollIntoView({behavior:'smooth'})">Complete Setup →</button>
 </nav>
@@ -731,7 +731,7 @@ select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%
             <label class="checkbox-item" style="cursor:pointer">
               <input type="checkbox" id="f-confirm">
               <div class="checkbox-box"></div>
-              <div class="checkbox-item-text" style="font-size:13px;color:var(--text-secondary);line-height:1.5">I confirm that this information is accurate and I give Vigil AI permission to use it to configure our deployment. Credentials will be handled securely and not stored beyond installation.</div>
+              <div class="checkbox-item-text" style="font-size:13px;color:var(--text-secondary);line-height:1.5">I confirm that this information is accurate and I give Vigil AI manager permission to use it to configure our deployment. Credentials will be handled securely and not stored beyond installation.</div>
             </label>
           </div>
 
@@ -772,9 +772,9 @@ select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%
 
 <!-- FOOTER -->
 <footer>
-  <p>Vigil AI — Autonomous Hotel Management</p>
+  <p>Vigil AI Manager — Autonomous Hotel System</p>
   <p>Implementation Setup Brief</p>
-  <p style="margin-top:8px;font-size:11px">© 2025 Vigil AI. All rights reserved. · <a href="mailto:hello@vigil.works" style="color:var(--blue)">hello@vigil.works</a></p>
+  <p style="margin-top:8px;font-size:11px">© 2025 Vigil AI Manager. All rights reserved. · <a href="mailto:hello@vigil.works" style="color:var(--blue)">hello@vigil.works</a></p>
 </footer>
 
 <script>
@@ -876,7 +876,7 @@ document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 // ══ SHARE ══
 function shareGuide() {
   if (navigator.share) {
-    navigator.share({ title: 'Vigil AI — Hotel Setup Brief', url: window.location.href });
+    navigator.share({ title: 'Vigil AI Manager — Hotel Setup Brief', url: window.location.href });
   } else {
     navigator.clipboard?.writeText(window.location.href)
       .then(() => showToast('Link copied to clipboard'))
@@ -1120,7 +1120,7 @@ async function submitForm() {
 
 function buildEmailBody(d) {
   return `
-Vigil AI — IMPLEMENTATION BRIEF
+Vigil AI Manager — IMPLEMENTATION BRIEF
 Received: ${d.submitted_at}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
